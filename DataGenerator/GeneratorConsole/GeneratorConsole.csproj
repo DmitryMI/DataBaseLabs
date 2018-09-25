@@ -45,6 +45,7 @@
     <Compile Include="ChemGenerator.cs" />
     <Compile Include="CompanyGenerator.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="OwnerGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
