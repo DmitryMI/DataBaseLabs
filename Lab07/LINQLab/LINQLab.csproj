@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LinqQueries.cs" />
+    <Compile Include="LinqToSql\CompanyWrapper.cs" />
+    <Compile Include="LinqToSql\OwnersWrapper.cs" />
+    <Compile Include="LinqToSql\LinqToSql.cs" />
+    <Compile Include="LinqToSql\ProductsWrapper.cs" />
+    <Compile Include="LinqToSql\UserDataContext.cs" />
+    <Compile Include="LinqToXml.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
