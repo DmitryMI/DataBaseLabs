@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.IO;
+using System.Collections;
 
 namespace Wrox
 {
@@ -10,7 +11,7 @@ namespace Wrox
         {
             //DoAllAtOnce();
 
-            int menuElement;
+            /*int menuElement;
 
             do
             {
@@ -20,6 +21,11 @@ namespace Wrox
                     DoJob(menuElement);
 
             } while (menuElement != 0);
+            */
+
+            AppendComments();
+
+            Console.ReadKey();
         }
 
         static void DoAllAtOnce()
@@ -318,6 +324,48 @@ namespace Wrox
             Console.WriteLine("\n");
 
             Console.ReadKey();
+        }
+
+        static void AppendComments()
+        {
+            XmlDocument myDocument = new XmlDocument();
+            FileStream myFile = new FileStream("../../task.xml", FileMode.Open);
+            myDocument.Load(myFile);
+
+            AppendComment(myDocument, myDocument);
+
+            myDocument.Save("../../task_comments_added.xml");
+        }
+
+        static void AppendComment(object entryObj, XmlDocument root)
+        {
+            XmlNode xmlNode = entryObj as XmlNode;
+
+            if (xmlNode != null)
+            {
+                Console.WriteLine("Current node: " + xmlNode.Name);                
+
+                string concat = "";                
+
+                var children = xmlNode.ChildNodes;
+                foreach(XmlNode child in children)
+                {
+                    if (child.ChildNodes.Count == 1)
+                        concat += child.FirstChild.Value + " ";
+                }
+
+                if (children.Count > 1)
+                {
+                    XmlComment comment = root.CreateComment(concat);
+                    Console.WriteLine("New comment: " + comment.Value);
+                    xmlNode.AppendChild(comment);
+                }
+
+                Console.WriteLine("\n");
+
+                foreach (var child in xmlNode.ChildNodes)
+                    AppendComment(child, root);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GeneratorConsole
 {
     class ChemGenerator : Generator
     {
-        private HashSet<string> productNames;
+        private List<string> productNames;
         private List<string> motorTypes;
         private List<double> pricePerLiter;
         private List<string> companyNames;
@@ -17,7 +17,7 @@ namespace GeneratorConsole
 
         private string[] availableCompanies;
 
-        private string[] namePart1 = { "Power", "Speed", "Master", "Magic", "Coca-cola's", "Turbo", "Liquid", "Solid", "Nitro"};
+        private string[] namePart1 = { "Power", "Speed", "Master", "Magic", "Coca-colas", "Turbo", "Liquid", "Solid", "Nitro"};
         private string[] namePart2 = { "Oil", "Petrol", "Benzene", "Gasoline", "Booster", "Man", "Sonic", "Knuckles" };
         private string[] namePart3 = { "95", "98", "1000", "2000", "2k18" };
 
@@ -33,13 +33,21 @@ namespace GeneratorConsole
             return GetRandom(namePart1) + ' ' + GetRandom(namePart2) + ' ' + GetRandom(namePart3);
         }
 
-        private void GenerateNames(HashSet<string> namesList, int count)
+        private void GenerateNames(List<string> namesList, int count)
         {
             for (int i = 0; i < count; i++)
             {
-                bool ok = namesList.Add(GenerateName());
+                /*bool ok = namesList.Add(GenerateName());
                 if (!ok)
-                    i--;
+                    i--;*/
+
+                string name;
+                do
+                {
+                    name = GenerateName();
+                } while (namesList.Contains(name));
+
+                namesList.Add(name);
 
                 if (count % 10 == 0 && count > 0)
                 {
@@ -82,7 +90,7 @@ namespace GeneratorConsole
 
         public override string GenerateTable(int count)
         {
-            productNames = new HashSet<string>();
+            productNames = new List<string>();
             pricePerLiter = new List<double>();
             massList = new List<double>();
             companyNames = new List<string>();

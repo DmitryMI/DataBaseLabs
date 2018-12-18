@@ -9,10 +9,6 @@ namespace GeneratorConsole
 {
     class Program
     {
-        private static HashSet<string> productNames;
-        private static List<string> motorTypes;
-        private static List<string> pricePerLiter;
-        private static HashSet<string> companyNames;
 
         static void Main(string[] args)
         {
@@ -21,7 +17,7 @@ namespace GeneratorConsole
 
             Console.WriteLine("Owner table generated");
 
-            CompanyGenerator companyGenerator = new CompanyGenerator(ownerGenerator);
+            CompanyGenerator companyGenerator = new CompanyGenerator(ownerGenerator.Passports);
 
             string companyTable = companyGenerator.GenerateTable(100);
 
@@ -30,6 +26,8 @@ namespace GeneratorConsole
             File.WriteAllText("owners.txt", ownerTable);
             File.WriteAllText("companies.txt", companyTable);
             File.WriteAllText("products.txt", productTable);
+
+            Console.ReadKey();
         }
     }
 }

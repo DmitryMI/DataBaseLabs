@@ -12,7 +12,7 @@ namespace GeneratorConsole
         private string[] NameParts2 = { " хим. ", " рус ", "хим-системс", " технолджис" , ""};
         private string[] NameParts3 = { " Продакшн", " Компани", " Лимитед", " Корпорейшн" };
 
-        private HashSet<string> companies;
+        private List<string> companies;
         private List<string> addresses;
         private List<long> availableOwners;
         private List<long> generatedOwners;
@@ -31,13 +31,17 @@ namespace GeneratorConsole
             return GetRandom(NameParts1) + GetRandom(NameParts2) + GetRandom(NameParts3);
         }
 
-        private void GenerateCompanyNames(HashSet<string> comp, int count)
+        private void GenerateCompanyNames(List<string> comp, int count)
         {
             for(int i = 0; i < count; i++)
             {
-                bool ok = comp.Add(GenerateName());
-                if (!ok)
-                    i--;
+                string name;
+                do
+                {
+                    name = GenerateName();
+                } while (comp.Contains(name));
+
+                comp.Add(name);
 
                 if(count % 10 == 0 && count > 0)
                 {
@@ -74,18 +78,26 @@ namespace GeneratorConsole
         {
             for(int i = 0; i < count; i++)
             {
+                long random = GetRandom(availableOwners);
                 ownerList.Add(GetRandom(availableOwners));
+
+                Console.WriteLine("Added to owner list: " + random);
             }
         }
 
-        public CompanyGenerator(OwnerGenerator ownerGenerator)
+        public CompanyGenerator(List<long> passportList)
         {
-            availableOwners = ownerGenerator.Passports;
+            availableOwners = passportList;
+
+            foreach(long passport in passportList)
+            {
+                Console.WriteLine("Passport available: " + passport);
+            }
         }
 
         public override string GenerateTable(int count)
         {
-            companies = new HashSet<string>();
+            companies = new List<string>();
             addresses = new List<string>();
             generatedOwners = new List<long>();
             phoneNumbers = new List<string>();
@@ -104,11 +116,13 @@ namespace GeneratorConsole
 
             for (int i = 0; i < count; i++)
             {
+                Console.WriteLine("(Company) Passport printed to file: " + generatedOwners[i]);
+
                 string line = "(";
                 line += '\'' + companies.ToList()[i] + '\'' + ",";
                 line += '\'' + addresses[i] + '\'' + ",";
-                line += '\'' + generatedOwners[i] + '\'' + ",";
-                line += phoneNumbers[i] + ',';
+                line += "\'" + generatedOwners[i] + "\'" + ",";
+                line += "\'" + phoneNumbers[i] + "\'"+',';
                 line += coworkersCounts[i].ToString();
 
                 line += ')';

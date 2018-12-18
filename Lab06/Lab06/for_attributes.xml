@@ -1,14 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE Doctors[
-  <!ELEMENT Doctors (Passenger+)>
-  <!ELEMENT Passenger (Survival, Name, Sex, Age)>
-  <!ATTLIST Passenger PassengerId ID #REQUIRED>
-  <!ELEMENT Survival (#PCDATA)>
-  <!ELEMENT Name (#PCDATA)>
-  <!ELEMENT Sex (#PCDATA)>
-  <!ELEMENT Age (#PCDATA)>
-]>
-
 <Doctors>
 <?refreshData daily?>
 <![CDATA[<?xml version="1.0"?>]]>

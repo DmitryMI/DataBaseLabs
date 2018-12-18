@@ -8,9 +8,9 @@ namespace GeneratorConsole
 {
     class OwnerGenerator : Generator
     {
-        private long minPassport= 4500000000;
-        private long maxPassport = 4599999999;
-        private HashSet<long> passports;
+        private long minPassport= 135000;
+        private long maxPassport = 140000;
+        private List<long> passports;
         private List<string> names;
         private List<string> addresses;
         private List<bool> hasEducations;
@@ -54,13 +54,22 @@ namespace GeneratorConsole
             }            
         }
 
-        private void GeneratePassports(HashSet<long> passports, int count)
+        private void GeneratePassports(List<long> passports, int count)
         {
             for (int i = 0; i < count; i++)
             {
-                bool ok = passports.Add(GetRandomLong(minPassport, maxPassport));
-                if (!ok)
-                    i--;
+                /* bool ok = passports.Add(GetRandomLong(minPassport, maxPassport));
+                 if (!ok)
+                     i--;*/
+                long passport;
+                do
+                {
+                    passport = GetRandomLong(minPassport, maxPassport);
+                } while (passports.Contains(passport));
+
+                passports.Add(passport);
+
+                Console.WriteLine("Passport generated: " + passport);
             }
         }
 
@@ -80,14 +89,22 @@ namespace GeneratorConsole
             }
         }
 
-        public List<long> Passports => passports.ToList();
+        public List<long> Passports => passports;
 
-       
+        private string SexBoolToString(bool val)
+        {
+            return val ? "Male" : "Female";
+        }
+
+        private string EducationBoolToString(bool val)
+        {
+            return val ? "True" : "False";
+        }
 
         public override string GenerateTable(int count)
         {
             names = new List<string>();
-            passports = new HashSet<long>();
+            passports = new List<long>();
             addresses = new List<string>();
             hasEducations = new List<bool>();
             sexes = new List<bool>();
@@ -102,12 +119,12 @@ namespace GeneratorConsole
             for (int i = 0; i < count; i++)
             {
                 string line = "(";
-                line += passports.ToList()[i];
+                line += passports[i];
                 line += ',';
                 line += '\'' + names[i] + '\'' + ",";
-                line += '\'' + addresses[i] + '\'' + ",";
-                line += hasEducations[i].ToString() + ',';
-                line += sexes[i].ToString();
+                line += "\'"+ addresses[i] + '\'' + ",";
+                line += "\'" + EducationBoolToString(hasEducations[i]) + "\'" +  ",";
+                line += '\'' + SexBoolToString(sexes[i]) + '\'';
 
                 line += ')';
 
